@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatGPT Clone</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function toggleSidebar() {
+          const sidebar = document.getElementById('mobileSidebar');
+          sidebar.classList.toggle('translate-x-full');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('message');
+
+            textarea.addEventListener('input', () => {
+              textarea.style.height = 'auto';
+              const maxHeight = 200;
+              textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px';
+            });
+          });
+
+
+    </script>
+</head>
+<body class="h-screen bg-gray-100">
+<div class="flex h-full">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:block w-64 bg-gray-200 p-4">
+        <div class="flex flex-col space-y-4">
+            <div class="font-bold text-lg">Recent</div>
+            <!-- Add chat list items here -->
+        </div>
+    </aside>
+
+    <!-- Mobile Sidebar Drawer -->
+    <div id="mobileSidebar"
+         class="fixed top-0 right-0 h-full w-64 bg-gray-200 p-4 transform translate-x-full transition-transform duration-300 z-50 md:hidden">
+        <div class="flex justify-between items-center mb-4">
+            <div class="font-bold text-lg">Recent</div>
+            <button onclick="toggleSidebar()" class="text-gray-600 text-xl font-bold">×</button>
+        </div>
+        <!-- Add chat list items here -->
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex flex-col bg-white p-4 w-full">
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden flex justify-end mb-2">
+            <button onclick="toggleSidebar()" class="text-gray-600 p-2 rounded hover:bg-gray-200">
+                <!-- Hamburger icon -->
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Chat Response Area -->
+        <div id="response-container" class="flex-1 mb-4 p-4 overflow-auto">
+            <!-- Responses will be injected here -->
+        </div>
+
+        <!-- Chat Input -->
+        <div>
+            <form id="chatForm"
+                  class="w-full"
+                  hx-post="/ollama/chat"
+                  hx-swap="beforeend"
+                  hx-target="#response-container"
+                  hx-indicator="#ai-thinking"
+                  hx-on="htmx:beforeRequest: document.getElementById('message').value = '';">
+                <div class="flex items-start justify-center bg-gray-200 rounded-[35px] p-4 shadow-md max-w-screen-lg mx-auto w-full px-4 sm:px-6 lg:px-8">
+
+                    <textarea id="message" name="promptText"
+                              class="bg-gray-200 outline-none text-gray-700 rounded-xl py-2 px-4 w-full resize-none overflow-auto min-h-[3rem] sm:min-h-[4rem] md:min-h-[5rem] leading-tight max-h-[200px]"
+                              rows="1"
+                              placeholder="Ask anything..."></textarea>
+
+                    <button type="submit"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-600 rounded-full p-2 ml-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>

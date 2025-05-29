@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div th:fragment="responseFragment">
+    <div class="max-w-screen-lg mx-auto mb-6">
+        <div class="bg-gray-200 rounded-xl p-4 w-full mb-2">
+            <div class="text-gray-800 font-semibold mb-1">You:</div>
+            <p class="whitespace-pre-wrap" th:text="${message}">Message goes here</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 shadow border w-full">
+            <div class="text-gray-800 font-semibold mb-1">Ollama:</div>
+            <p class="whitespace-pre-wrap" th:text="${response}">Response goes here</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
