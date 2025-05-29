@@ -21,8 +21,7 @@ public class RagService {
 
     public QuestionAnswerAdvisor getQuestionAnswerAdvisor(String promptText, Map<String,Object> inputs){
         PromptTemplate customPromptTemplate = getCustomPromptTemplate(inputs);
-        log.debug("custom prompt template render input: {}", customPromptTemplate.render());
-        log.debug("Custom prompt template: {}", customPromptTemplate.getTemplate());
+        //log.debug("custom prompt template render input: {}", customPromptTemplate.render());
         return QuestionAnswerAdvisor.builder(vectorStoreService.getVectorStore())
                 .promptTemplate(customPromptTemplate)
                 //.searchRequest(SearchRequest.builder().similarityThreshold(0.4d).topK(2).build())
@@ -44,7 +43,7 @@ public class RagService {
                 Question: <query>
 
                 Rules:
-                1. If the answer is not in the context, say "I don't know".
+                1. If the answer is not in the context and chat history, say "I don't know".
                 2. Do not mention that the information is from context or documents.
                 3. Be accurate, complete, and to the point.
                 """)
